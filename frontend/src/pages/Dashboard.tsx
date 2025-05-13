@@ -12,7 +12,11 @@ const Dashboard = () => {
   const [idea, setIdea] = useState('');
   const [activeMode, setActiveMode] = useState<string | null>("validator");
   const [showUserMenu, setShowUserMenu] = useState(false);
-
+  const storedUser = localStorage.getItem('user');
+      if (!storedUser) {
+        alert('User not logged in.');
+        navigate('/login'); // Redirect to login if user is not logged in
+      }
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (idea.trim()) {
@@ -27,6 +31,9 @@ const Dashboard = () => {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    setShowUserMenu(false);
     navigate('/login');
     toast.info("Logged out successfully");
   };

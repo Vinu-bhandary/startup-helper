@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { register } from '../services/api'; // Adjust the import path as necessary
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -17,8 +18,21 @@ const Signup = () => {
     
     // This is a mock signup - in a real app, you would register with a backend
     if (username && email && password) {
+      try {
+      const data = {
+        "name": username,
+        "email": email,
+        "password": password,
+      }
+      register(data)
+      console.log('Signing up with', username, email, password);
       toast.success("Account created successfully!");
       navigate("/login");
+    }
+    catch (error) {
+      console.error('Error signing up:', error);
+      toast.error("Error creating account");
+    }
     } else {
       toast.error("Please fill in all fields");
     }

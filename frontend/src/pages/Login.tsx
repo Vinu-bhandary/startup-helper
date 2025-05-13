@@ -5,19 +5,31 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { login } from '../services/api';
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // This is a mock login - in a real app, you would validate with a backend
     if (email && password) {
+      try {
+      // Call the login API endpoint
+      const userData = await login(email, password);
+      // Save user data and token (if applicable) in localStorage
+      localStorage.setItem('user', JSON.stringify(userData));
+      localStorage.setItem('token', 'dummy-token'); // Replace with actual token if provided by your backend
+      // Redirect to home page or a protected route
       toast.success("Login successful!");
       navigate("/dashboard");
+    } catch (err) {
+      console.error('Login error:', err);
+      toast.error('Login failed, please check your credentials and try again.');
+    }
     } else {
       toast.error("Please fill in all fields");
     }
