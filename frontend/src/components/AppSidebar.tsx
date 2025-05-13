@@ -1,0 +1,108 @@
+
+import React, { useState } from 'react';
+import { AlignJustify, FileText, Gauge, User, LogOut, Plus } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+
+type SidebarItemProps = {
+  icon: React.ReactNode;
+  label: string;
+  onClick?: () => void;
+  active?: boolean;
+};
+
+const SidebarItem = ({ icon, label, onClick, active }: SidebarItemProps) => {
+  return (
+    <Button
+      variant="ghost"
+      onClick={onClick}
+      className={cn(
+        "w-full flex items-center justify-start gap-3 px-4 py-3 text-sm font-medium rounded-md hover:bg-udbhava-purple/20 transition-colors",
+        active ? "bg-udbhava-purple/30 text-white" : "text-white/80"
+      )}
+    >
+      {icon}
+      <span>{label}</span>
+    </Button>
+  );
+};
+
+const AppSidebar = () => {
+  const [collapsed, setCollapsed] = useState(false);
+  const [activeItem, setActiveItem] = useState<string | null>("validator");
+
+  const toggleSidebar = () => {
+    setCollapsed(!collapsed);
+  };
+
+  const handleItemClick = (itemName: string) => {
+    setActiveItem(itemName);
+  };
+
+  return (
+    <div
+      className={cn(
+        "h-screen bg-sidebar flex flex-col border-r border-white/10 transition-all duration-300",
+        collapsed ? "w-16" : "w-64"
+      )}
+    >
+      <div className="flex items-center p-4 border-b border-white/10">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={toggleSidebar}
+          className="text-white/80 hover:text-white hover:bg-white/10"
+        >
+          <AlignJustify size={20} />
+        </Button>
+        {!collapsed && (
+          <h1 className="ml-2 text-xl font-bold tracking-widest text-white">UDBHAVA</h1>
+        )}
+      </div>
+
+      <div className="flex-1 overflow-y-auto py-4 space-y-1 px-2">
+        <div className="mb-6 h-24 bg-black/20 rounded-md"></div>
+        <SidebarItem
+          icon={<FileText size={20} />}
+          label="Validator mode"
+          active={activeItem === "validator"}
+          onClick={() => handleItemClick("validator")}
+        />
+        <SidebarItem
+          icon={<Gauge size={20} />}
+          label="Risk mode"
+          active={activeItem === "risk"}
+          onClick={() => handleItemClick("risk")}
+        />
+        <SidebarItem
+          icon={<FileText size={20} />}
+          label="Planner mode"
+          active={activeItem === "planner"}
+          onClick={() => handleItemClick("planner")}
+        />
+        <SidebarItem
+          icon={<Plus size={20} />}
+          label="Start a new chat"
+          active={activeItem === "new-chat"}
+          onClick={() => handleItemClick("new-chat")}
+        />
+      </div>
+
+      <div className="border-t border-white/10 pt-2 pb-4 px-2 space-y-1">
+        <SidebarItem
+          icon={<User size={20} />}
+          label="User profile"
+          active={activeItem === "profile"}
+          onClick={() => handleItemClick("profile")}
+        />
+        <SidebarItem
+          icon={<LogOut size={20} />}
+          label="Logout"
+          onClick={() => console.log("Logout clicked")}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default AppSidebar;
