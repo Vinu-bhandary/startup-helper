@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import { AlignJustify, FileText, Gauge, User, LogOut, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { Card, CardContent } from '@/components/ui/card';
 
 type SidebarItemProps = {
   icon: React.ReactNode;
@@ -28,21 +31,38 @@ const SidebarItem = ({ icon, label, onClick, active }: SidebarItemProps) => {
 };
 
 const AppSidebar = () => {
+  const activeMode = localStorage.getItem("activeMode") || "validator";
   const [collapsed, setCollapsed] = useState(false);
-  const [activeItem, setActiveItem] = useState<string | null>("validator");
+  const [activeItem, setActiveItem] = useState<string | null>(activeMode);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const storedUser = localStorage.getItem('user');
+  const navigate = useNavigate();
+  if (!storedUser) {
+    alert('User not logged in.');
+    navigate('/login'); // Redirect to login if user is not logged in
+  }
+
 
   const toggleSidebar = () => {
     setCollapsed(!collapsed);
   };
 
   const handleItemClick = (itemName: string) => {
+    localStorage.setItem("activeMode", itemName);
     setActiveItem(itemName);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    setShowUserMenu(false);
+    navigate('/login');
+    toast.info("Logged out successfully");
+  };
   return (
     <div
       className={cn(
-        "h-screen bg-sidebar flex flex-col border-r border-white/10 transition-all duration-300",
+        "h-screen bg-sidebar flex flex-col border-r border-white/10 transition-all duration-300 sticky top-0",
         collapsed ? "w-16" : "w-64"
       )}
     >
@@ -80,12 +100,12 @@ const AppSidebar = () => {
           active={activeItem === "planner"}
           onClick={() => handleItemClick("planner")}
         />
-        <SidebarItem
+        {/* <SidebarItem
           icon={<Plus size={20} />}
           label="Start a new chat"
           active={activeItem === "new-chat"}
           onClick={() => handleItemClick("new-chat")}
-        />
+        /> */}
       </div>
 
       <div className="border-t border-white/10 pt-2 pb-4 px-2 space-y-1">
@@ -98,7 +118,7 @@ const AppSidebar = () => {
         <SidebarItem
           icon={<LogOut size={20} />}
           label="Logout"
-          onClick={() => console.log("Logout clicked")}
+          onClick={() => handleLogout()}
         />
       </div>
     </div>

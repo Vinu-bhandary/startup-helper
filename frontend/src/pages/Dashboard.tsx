@@ -1,11 +1,11 @@
 
 import React, { useState } from 'react';
-import { FileText, Gauge, LogOut, SendHorizontal, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { FileText, Gauge, LogOut, SendHorizontal, User } from 'lucide-react';
+
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -26,8 +26,10 @@ const Dashboard = () => {
   };
 
   const handleModeClick = (mode: string) => {
+    localStorage.setItem('activeMode', mode);
     setActiveMode(mode);
     toast.info(`Switched to ${mode} mode`);
+    navigate('/welcome');
   };
 
   const handleLogout = () => {
@@ -124,26 +126,7 @@ const Dashboard = () => {
             </Button>
           </div>
           
-          <form 
-            onSubmit={handleSubmit} 
-            className="w-full max-w-2xl relative glass-morphism"
-          >
-            <Input
-              type="text"
-              value={idea}
-              onChange={(e) => setIdea(e.target.value)}
-              placeholder="Enter your idea here"
-              className="w-full px-4 py-3 bg-transparent text-white border-none outline-none rounded-md"
-            />
-            <Button
-              type="submit"
-              size="icon"
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-udbhava-purple text-white hover:bg-udbhava-purple/90 rounded-md"
-              disabled={!idea.trim()}
-            >
-              <SendHorizontal size={18} />
-            </Button>
-          </form>
+          
         </div>
       </main>
     </div>

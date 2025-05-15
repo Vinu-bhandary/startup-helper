@@ -66,6 +66,7 @@ export async function register(userData: { name: string; email: string; password
 // 3. Validate Idea
 //
 export async function validateIdea(user_id: number, message: string): Promise<IdeaValidationResponse> {
+  console.log(user_id, message);
   const response = await fetch(`${API_BASE_URL}/validate`, {
     method: 'POST',
     headers: {
@@ -83,6 +84,7 @@ export async function validateIdea(user_id: number, message: string): Promise<Id
 // 4. Analyze Risks
 //
 export async function analyzeRisks(user_id: number, message: string): Promise<RiskAnalysisResponse> {
+  console.log(user_id, message);
   const response = await fetch(`${API_BASE_URL}/risks`, {
     method: 'POST',
     headers: {
@@ -100,6 +102,7 @@ export async function analyzeRisks(user_id: number, message: string): Promise<Ri
 // 5. Plan Guidance
 //
 export async function planGuidance(user_id: number, message: string): Promise<PlanGuidanceResponse> {
+  console.log(user_id, message);
   const response = await fetch(`${API_BASE_URL}/plan`, {
     method: 'POST',
     headers: {
