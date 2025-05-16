@@ -47,9 +47,15 @@ const AppSidebar = () => {
     setCollapsed(!collapsed);
   };
 
+  const handleProfileClick = () => {
+    setShowUserMenu(!showUserMenu);
+  }
+
   const handleItemClick = (itemName: string) => {
     localStorage.setItem("activeMode", itemName);
     setActiveItem(itemName);
+    toast.info(`Switched to ${itemName} mode`);
+    
   };
 
   const handleLogout = () => {
@@ -62,8 +68,8 @@ const AppSidebar = () => {
   return (
     <div
       className={cn(
-        "h-screen bg-sidebar flex flex-col border-r border-white/10 transition-all duration-300 sticky top-0",
-        collapsed ? "w-16" : "w-64"
+        "h-screen bg-sidebar flex flex-col border-r border-white/10 transition-all duration-300",
+        collapsed ? "w-10" : "w-64"
       )}
     >
       <div className="flex items-center p-4 border-b border-white/10">
@@ -100,6 +106,7 @@ const AppSidebar = () => {
           active={activeItem === "planner"}
           onClick={() => handleItemClick("planner")}
         />
+        
         {/* <SidebarItem
           icon={<Plus size={20} />}
           label="Start a new chat"
@@ -107,13 +114,30 @@ const AppSidebar = () => {
           onClick={() => handleItemClick("new-chat")}
         /> */}
       </div>
+      <div className='relative flex items-center'>
+      {showUserMenu && (
+                      <Card className="absolute left-0 mt-2 w-48 bg-black/90 border-white/10 text-white z-20">
+                        <CardContent className="p-2 space-y-1">
+                          <div className="flex items-center gap-2 p-2 text-sm">
+                            <User size={16} />
+                            <span>Username</span>
+                          </div>
+                          <div className="flex items-center gap-2 p-2 text-sm">
+                            <FileText size={16} />
+                            <span>Email</span>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    )}
+      </div>
 
       <div className="border-t border-white/10 pt-2 pb-4 px-2 space-y-1">
+      
         <SidebarItem
           icon={<User size={20} />}
           label="User profile"
           active={activeItem === "profile"}
-          onClick={() => handleItemClick("profile")}
+          onClick={() => handleProfileClick()}
         />
         <SidebarItem
           icon={<LogOut size={20} />}

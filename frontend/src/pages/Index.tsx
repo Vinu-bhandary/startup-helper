@@ -185,25 +185,26 @@ const Index = () => {
     <div className="flex h-screen w-full overflow-hidden font-orbitron">
       <AppSidebar />
       <main className="flex-1 flex flex-col h-full overflow-hidden p-8 bg-gradient-to-br from-udbhava-dark-purple to-udbhava-darker-purple">
-      <div className="max-w-3xl w-full flex flex-col flex-1 space-y-4 animate-fade-in">
-      <div className="flex-1 w-full overflow-y-auto">
-            {botReply ? (
-              <div className="rounded-lg shadow prose prose-invert">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}> 
-                  {botReply}
-                </ReactMarkdown>
-              </div>
-            ) : (
-              <div className="text-center space-y-3" id="welcome">
-                <h1 className="text-5xl font-bold tracking-wider text-white animate-pulse-slow">
-                  WELCOME TO UDBHAVA
-                </h1>
-                <p className="text-xl text-white/80 tracking-widest">
-                  WHERE IDEAS EARN THEIR WINGS
-                </p>
-              </div>
-            )}
-          </div>
+      <div className="max-w-3xl w-full flex flex-col flex-1 min-h-0 space-y-4 animate-fade-in">
+  <div className="flex-1 w-full overflow-y-auto pr-2 scrollbar-thin">
+    {botReply ? (
+      <div className="rounded-lg shadow prose prose-invert">
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          {botReply}
+        </ReactMarkdown>
+      </div>
+    ) : (
+      <div className="text-center space-y-3" id="welcome">
+        <h1 className="text-5xl font-bold tracking-wider text-white animate-pulse-slow">
+          WELCOME TO UDBHAVA
+        </h1>
+        <p className="text-xl text-white/80 tracking-widest">
+          WHERE IDEAS EARN THEIR WINGS
+        </p>
+      </div>
+    )}
+  </div>
+
           <form
             onSubmit={handleSubmit}
             className="w-full max-w-2xl relative glass-morphism"
