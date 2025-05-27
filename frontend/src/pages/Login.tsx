@@ -14,16 +14,19 @@ const Login = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // This is a mock login - in a real app, you would validate with a backend
+    toast.message("Logging in...", {
+      icon: "🔒",
+      style: {
+        background: '#1a1a1a',
+        color: '#fff',
+      },
+      duration: 2000,
+    });
     if (email && password) {
       try {
-      // Call the login API endpoint
       const userData = await login(email, password);
-      // Save user data and token (if applicable) in localStorage
       localStorage.setItem('user', JSON.stringify(userData));
-      localStorage.setItem('token', 'dummy-token'); // Replace with actual token if provided by your backend
-      // Redirect to home page or a protected route
+      localStorage.setItem('token', 'dummy-token'); 
       toast.success("Login successful!");
       navigate("/dashboard");
     } catch (err) {

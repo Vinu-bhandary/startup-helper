@@ -152,10 +152,11 @@ const Index = () => {
     if (!idea.trim()) return;
     try {
       let response;
+      const activMode = localStorage.getItem('activeMode');
       const userId = storedUser.id;
-      if (activeMode === 'validator') {
+      if (activMode === 'validator') {
         response = await validateIdea(userId, idea);
-      } else if (activeMode === 'risk') {
+      } else if (activMode === 'risk') {
         response = await analyzeRisks(userId, idea);
       } else {
         response = await planGuidance(userId, idea);
@@ -185,13 +186,15 @@ const Index = () => {
     <div className="flex h-screen w-full overflow-hidden font-orbitron">
       <AppSidebar />
       <main className="flex-1 flex flex-col h-full overflow-hidden p-8 bg-gradient-to-br from-udbhava-dark-purple to-udbhava-darker-purple">
-      <div className="max-w-3xl w-full flex flex-col flex-1 min-h-0 space-y-4 animate-fade-in">
-  <div className="flex-1 w-full overflow-y-auto pr-2 scrollbar-thin">
+      <div className="w-full flex flex-col flex-1 min-h-0 space-y-4 animate-fade-in overflow-y-auto">
+  <div className="flex max-w-3xl w-full pr-2 bg-udbhava-purple/40 rounded-md">
     {botReply ? (
+    <div className="flex w-full p-4 h-full">
       <div className="rounded-lg shadow prose prose-invert">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>
           {botReply}
         </ReactMarkdown>
+      </div>
       </div>
     ) : (
       <div className="text-center space-y-3" id="welcome">
@@ -205,16 +208,17 @@ const Index = () => {
     )}
   </div>
 
-          <form
+        </div>
+         <form
             onSubmit={handleSubmit}
-            className="w-full max-w-2xl relative glass-morphism"
+            className="w-full relative glass-morphism max-w-5xl"
           >
             <Input
               type="text"
               value={idea}
               onChange={(e) => setIdea(e.target.value)}
               placeholder="Enter your idea here"
-              className="w-full px-4 py-3 bg-transparent text-white border-none outline-none rounded-md"
+              className="w-full px-4 py-3 bg-transparent overflow-hidden text-white border-none outline-none rounded-md"
             />
             <Button
               type="submit"
@@ -225,7 +229,6 @@ const Index = () => {
               <SendHorizontal size={18} />
             </Button>
           </form>
-        </div>
       </main>
     </div>
   );

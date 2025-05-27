@@ -13,6 +13,7 @@ const Dashboard = () => {
   const [activeMode, setActiveMode] = useState<string | null>("validator");
   const [showUserMenu, setShowUserMenu] = useState(false);
   const storedUser = localStorage.getItem('user');
+  const parsedUser = storedUser ? JSON.parse(storedUser) : null;
       if (!storedUser) {
         alert('User not logged in.');
         navigate('/login'); // Redirect to login if user is not logged in
@@ -35,6 +36,7 @@ const Dashboard = () => {
   const handleLogout = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+    localStorage.removeItem('activeMode');
     setShowUserMenu(false);
     navigate('/login');
     toast.info("Logged out successfully");
@@ -63,11 +65,11 @@ const Dashboard = () => {
               <CardContent className="p-2 space-y-1">
                 <div className="flex items-center gap-2 p-2 text-sm">
                   <User size={16} />
-                  <span>Username</span>
+                  <span>{parsedUser.name}</span>
                 </div>
                 <div className="flex items-center gap-2 p-2 text-sm">
                   <FileText size={16} />
-                  <span>Email</span>
+                  <span>{parsedUser.email}</span>
                 </div>
                 <Button 
                   onClick={handleLogout} 

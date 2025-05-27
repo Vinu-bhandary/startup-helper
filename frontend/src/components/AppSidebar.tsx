@@ -36,6 +36,7 @@ const AppSidebar = () => {
   const [activeItem, setActiveItem] = useState<string | null>(activeMode);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const storedUser = localStorage.getItem('user');
+  const parsedUser = storedUser ? JSON.parse(storedUser) : null;
   const navigate = useNavigate();
   if (!storedUser) {
     alert('User not logged in.');
@@ -61,6 +62,7 @@ const AppSidebar = () => {
   const handleLogout = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+    localStorage.removeItem('activeMode');
     setShowUserMenu(false);
     navigate('/login');
     toast.info("Logged out successfully");
@@ -120,11 +122,11 @@ const AppSidebar = () => {
                         <CardContent className="p-2 space-y-1">
                           <div className="flex items-center gap-2 p-2 text-sm">
                             <User size={16} />
-                            <span>Username</span>
+                            <span>{parsedUser.name}</span>
                           </div>
                           <div className="flex items-center gap-2 p-2 text-sm">
                             <FileText size={16} />
-                            <span>Email</span>
+                            <span>{parsedUser.email}</span>
                           </div>
                         </CardContent>
                       </Card>
