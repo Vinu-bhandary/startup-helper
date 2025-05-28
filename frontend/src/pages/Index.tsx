@@ -120,26 +120,39 @@
 
 
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import AppSidebar from '@/components/AppSidebar';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { validateIdea, analyzeRisks, planGuidance } from '../services/api';
+import { validateIdea, analyzeRisks, planGuidance, getHistory } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import { SendHorizontal } from 'lucide-react';
 import { toast } from 'sonner';
 
+const ChatBubble = ({ message, isUser }: { message: string; isUser: boolean}) => {
+  return (
+    <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-4`}>
+      <div
+        className={`px-4 py-2 rounded-lg shadow-md ${
+          isUser ? 'bg-udbhava-purple text-white ml-96' : 'bg-gray-200 text-black max-w-3xl'
+        }`}
+      >
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{message}</ReactMarkdown>
+      </div>
+    </div>
+  );
+}
 const Index = () => {
   const navigate = useNavigate();
   const [idea, setIdea] = useState('');
   const [botReply, setBotReply] = useState<string | null>(null);
+  const [chatHistory, setChatHistory] = useState([]);
   const [activeMode, setActiveMode] = useState<string>(
     localStorage.getItem('activeMode') || 'validator'
   );
   const storedUser = JSON.parse(localStorage.getItem('user') || 'null');
-
   useEffect(() => {
     if (!storedUser) {
       alert('User not logged in.');
@@ -147,10 +160,35 @@ const Index = () => {
     }
   }, [storedUser, navigate]);
 
+  useEffect(() => {
+  const fetchHistory = async () => {
+    const storedUser = JSON.parse(localStorage.getItem('user') || 'null');
+    if (!storedUser) return;
+
+    try {
+      const history = await getHistory(storedUser.id);
+      setChatHistory(history);
+      console.log('Chat history loaded:', history);
+    } catch (error) {
+      console.error('Failed to load history:', error);
+    }
+  };
+
+  fetchHistory();
+}, []);
+
+
+const bottomRef = useRef(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatHistory]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!idea.trim()) return;
     try {
+      toast.loading('Submitting your idea...');
       let response;
       const activMode = localStorage.getItem('activeMode');
       const userId = storedUser.id;
@@ -163,7 +201,16 @@ const Index = () => {
       }
       setBotReply(response.reply);
       toast.success('Idea submitted successfully!');
+
       setIdea('');
+      document.getElementById('welcome')?.scrollIntoView({ behavior: 'smooth' });
+
+      // Optionally update chatHistory state to include the new chat
+      setChatHistory((prev: []) => [
+        ...prev,
+        { message: idea, reply: response.reply }
+      ]);
+      toast.dismiss();
     } catch (error) {
       toast.error(`Error: ${error.message}`);
     }
@@ -187,15 +234,27 @@ const Index = () => {
       <AppSidebar />
       <main className="flex-1 flex flex-col h-full overflow-hidden p-8 bg-gradient-to-br from-udbhava-dark-purple to-udbhava-darker-purple">
       <div className="w-full flex flex-col flex-1 min-h-0 space-y-4 animate-fade-in overflow-y-auto">
-  <div className="flex max-w-3xl w-full pr-2 bg-udbhava-purple/40 rounded-md">
-    {botReply ? (
-    <div className="flex w-full p-4 h-full">
-      <div className="rounded-lg shadow prose prose-invert">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-          {botReply}
-        </ReactMarkdown>
+  <div className="w-full pr-2 rounded-md">
+    {chatHistory.length ? (
+    <div className="pr-2 rounded-md">
+      <div className="space-y-3" id="welcome">
+        {        chatHistory.map((chat, index) => (
+          <div>
+          <ChatBubble
+            key={index}
+            message={chat.message}
+            isUser={true}
+          />
+          <ChatBubble
+            key={index}
+            message={chat.reply}
+            isUser={false}
+          />
+          <div ref={bottomRef} />
+        </div>
+          ))}
       </div>
-      </div>
+  </div>
     ) : (
       <div className="text-center space-y-3" id="welcome">
         <h1 className="text-5xl font-bold tracking-wider text-white animate-pulse-slow">
