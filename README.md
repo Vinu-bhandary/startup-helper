@@ -90,10 +90,10 @@ UDBHAVA is an AI-driven startup advisor designed to help early-stage entrepreneu
 3. **Run the React Development Server:**
 
    ```bash
-   npm start
+   npm run dev
    ```
 
-   The frontend should now be accessible at `http://localhost:3000`.
+   The frontend should now be accessible at `http://localhost:8080`.
 
 ## API Endpoints
 
