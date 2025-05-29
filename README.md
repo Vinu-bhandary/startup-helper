@@ -38,8 +38,8 @@ UDBHAVA is an AI-driven startup advisor designed to help early-stage entrepreneu
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/Vinu-bhandary/Udbhava-StartUp_Helper.git
-   cd Udbhava-StartUp_Helper
+   git clone https://github.com/Vinu-bhandary/startup-helper.git
+   cd startup-helper
    ```
 
 2. **Create and Activate a Virtual Environment:**
@@ -78,7 +78,7 @@ UDBHAVA is an AI-driven startup advisor designed to help early-stage entrepreneu
 1. **Navigate to the Frontend Directory:**
 
    ```bash
-   cd frontend/my-app
+   cd frontend
    ```
 
 2. **Install Frontend Dependencies:**
