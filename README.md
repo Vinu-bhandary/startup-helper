@@ -1,126 +1,160 @@
 # UDBHAVA - Startup Helper Chatbot
 
-UDBHAVA is an AI-driven startup advisor designed to help early-stage entrepreneurs validate their business ideas, assess risks, and plan for long-term success. The system leverages a Django backend with Django Ninja to expose RESTful API endpoints, integrates with the Gemini API for generating actionable responses, and provides a React-based frontend with PostgreSQL for data storage.
+**UDBHAVA** is an AI-driven startup advisor designed to help early-stage entrepreneurs validate their business ideas, assess risks, and plan for long-term success. The system is powered by a Django backend (with Django Ninja for RESTful APIs), integrates the Gemini API for smart and contextual responses, and features a modern React-based frontend with PostgreSQL for persistent data storage.
 
+---
 
-## Features
+## 🚀 Features
 
-- **Idea Validation:**  
-  Provides step-by-step guidance to validate startup ideas with a focus on market research, feasibility, and competitor analysis.
-- **Risk Analysis:**  
-  Offers actionable advice on identifying and mitigating startup risks, including market uncertainties and operational challenges.
-- **Strategic Planning:**  
-  Supplies guidance on building robust business models, go-to-market strategies, and long-term planning for scaling startups.
-- **User Authentication:**  
-  Simple login and registration functionality to manage user sessions.
-- **Chat Interface:**  
-  Interactive chatbot experiences across different modes (validator, risk, and planner).
-- **Readable Output:**  
-  Automatically formats AI responses for clarity, removing unwanted characters (e.g., asterisks).
+* **🧠 Idea Validation:**
+  Step-by-step evaluation of startup ideas focusing on uniqueness, feasibility, and market fit.
 
-## Technology Stack
+* **⚠️ Risk Analysis:**
+  Identification and mitigation strategies for startup risks, including market, operational, and financial threats.
 
-- **Backend:**  
-  - Python, Django, Django Ninja  
-  - Gemini API for AI-powered responses  
-  - PostgreSQL as the database
-- **Frontend:**  
-  - React, React Router  
-  - CSS for styling
-- **Other Tools:**  
-  - django-cors-headers for cross-origin requests  
-  - Fetch API for making API calls from React
+* **📈 Strategic Planning:**
+  Guidance on building business models, go-to-market strategies, and scalable startup roadmaps.
 
-## Installation
+* **🔐 User Authentication:**
+  Login and registration system to manage user-specific chat sessions.
 
-### Backend Setup
+* **💬 Interactive Chat Interface:**
+  Real-time chatbot experience with three distinct modes: Validator, Risk, and Planner.
 
-1. **Clone the Repository:**
+* **🧹 Clean Output Formatting:**
+  Automatic cleanup of AI responses, supporting markdown (via React Markdown) for readable, well-structured replies.
+
+---
+
+## 🛠️ Technology Stack
+
+### Backend
+
+* Python, Django
+* Django Ninja (REST API framework)
+* Gemini API (for AI-generated responses)
+* PostgreSQL (relational database)
+
+### Frontend
+
+* React (with TypeScript)
+* React Router DOM
+* Tailwind CSS for styling
+
+### Utilities & Tools
+
+* `django-cors-headers` for CORS support
+* `fetch` API for frontend-backend communication
+* `react-markdown` and `remark-gfm` for rendering formatted responses
+
+---
+
+## ⚙️ Installation
+
+### 📌 Backend Setup
+
+1. **Clone the repository:**
 
    ```bash
    git clone https://github.com/Vinu-bhandary/startup-helper.git
    cd startup-helper
    ```
 
-2. **Create and Activate a Virtual Environment:**
+2. **Create & activate a virtual environment:**
 
    ```bash
    python -m venv env
-   source env/bin/activate  # On Windows: env\Scripts\activate
+   source env/bin/activate   # On Windows: env\Scripts\activate
    ```
 
-3. **Install Backend Dependencies:**
+3. **Install dependencies:**
 
    ```bash
    pip install -r backend/requirements.txt
    ```
 
-4. **Configure the Database:**  
-   Update your Django `settings.py` with your PostgreSQL configuration.
+4. **Configure PostgreSQL:**
 
-5. **Apply Migrations:**
+   Update the database settings in `backend/settings.py` to match your PostgreSQL credentials.
+
+5. **Apply migrations:**
 
    ```bash
    python manage.py makemigrations
    python manage.py migrate
    ```
 
-6. **Run the Django Server:**
+6. **Start the backend server:**
 
    ```bash
    python manage.py runserver
    ```
 
-   The backend should now be running at `http://127.0.0.1:8000`.
+   Backend runs at: [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
-### Frontend Setup
+---
 
-1. **Navigate to the Frontend Directory:**
+### 📌 Frontend Setup
+
+1. **Navigate to the frontend directory:**
 
    ```bash
    cd frontend
    ```
 
-2. **Install Frontend Dependencies:**
+2. **Install dependencies:**
 
    ```bash
    npm install
    ```
 
-3. **Run the React Development Server:**
+3. **Start the development server:**
 
    ```bash
    npm run dev
    ```
 
-   The frontend should now be accessible at `http://localhost:8080`.
+   Frontend runs at: [http://localhost:8080](http://localhost:8080)
 
-## API Endpoints
+---
 
-The backend exposes several endpoints using Django Ninja:
+## 📡 API Endpoints
 
-- **GET `/login`:**  
-  Authenticates a user using email and password.
-- **POST `/register`:**  
-  Registers a new user.
-- **POST `/validate`:**  
-  Validates a startup idea by generating a detailed response using the Gemini API.
-- **POST `/risks`:**  
-  Provides actionable advice on startup risk analysis.
-- **POST `/plan`:**  
-  Offers strategic planning guidance.
-- **GET `/history`:**  
-  Retrieves the chat history for a specific user.
+These APIs are exposed via Django Ninja:
 
-> **Note:** If you are using a URL prefix (e.g., `/api/`), ensure your frontend API calls are updated accordingly.
+| Method | Endpoint    | Description                            |
+| ------ | ----------- | -------------------------------------- |
+| GET    | `/login`    | Authenticates user by email & password |
+| POST   | `/register` | Registers a new user                   |
+| POST   | `/validate` | Validates startup idea using AI        |
+| POST   | `/risks`    | Provides risk mitigation strategies    |
+| POST   | `/plan`     | Offers long-term planning suggestions  |
+| GET    | `/history`  | Returns user's chat history            |
 
-## Usage
+> 🔖 Make sure API URLs in the frontend match the backend route (add `/api/` prefix if configured in Django).
 
-- **User Authentication:**  
-  Use the login and registration pages to manage user sessions. User details are stored in localStorage.
-- **Chat Modes:**  
-  - **Validator Mode:** Validate your startup ideas.
-  - **Risk Mode:** Analyze and mitigate potential risks.
-  - **Planner Mode:** Get strategic guidance for long-term success.
-- **Response Formatting:**  
-  AI responses are automatically formatted (e.g., split into paragraphs and cleaned of unwanted characters) before being displayed.
+---
+
+## 🧑‍💼 Usage Guide
+
+* **Login/Register:**
+  Start by creating an account or logging in to an existing one. Session data is stored in localStorage.
+
+* **Choose a Mode:**
+
+  * **Validator Mode** → Validate startup ideas.
+  * **Risk Mode** → Assess business risks.
+  * **Planner Mode** → Get long-term strategy suggestions.
+
+* **Chat Interaction:**
+  Enter your idea or question in the chat box. Responses will be formatted in a readable markdown format for clarity and better UX.
+
+---
+
+## 📎 Notes
+
+* Use `.env` files or environment variables to securely store any secret keys or Gemini API credentials.
+* Responses are designed to be adaptive, based on the selected chat mode and user context.
+* Chat history is fetched and displayed dynamically on page load.
+
+---
